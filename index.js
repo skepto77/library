@@ -48,7 +48,7 @@ app.get('/api/books/:id', (req, res) => {
 app.post('/api/books', (req, res) => {
   const { books } = store;
   const { title } = req.body;
-  const idx = uuidv4();
+  const idx = books.length + 1;
   const book = new Book(idx, title);
   books.push(book);
   res.json(book);
