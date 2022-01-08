@@ -1,8 +1,8 @@
-import { v4 as uuidv4 } from 'uuid';
+import lodash from 'lodash';
 
 class Book {
   constructor(
-    id = uuidv4(),
+    id = _uniqueId(),
     title = '',
     description = '',
     authors = '',
