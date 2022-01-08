@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import { v4 as uuidv4 } from 'uuid';
 import Book from './models/Book.js';
 
 const store = {
@@ -8,7 +9,7 @@ const store = {
 
 [1, 2, 3].map((el) => {
   const newBook = new Book(
-    `${el}`,
+    `${uuidv4()}`,
     `title ${el}`,
     `description ${el}`,
     `authors ${el}`,
@@ -48,8 +49,7 @@ app.get('/api/books/:id', (req, res) => {
 app.post('/api/books', (req, res) => {
   const { books } = store;
   const { title } = req.body;
-  const idx = books.length + 1;
-  const book = new Book(idx, title);
+  const book = new Book(`${uuidv4()}`, title);
   books.push(book);
   res.json(book);
 });
