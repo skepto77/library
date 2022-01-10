@@ -1,0 +1,33 @@
+<form method="POST" class="mt-5"  enctype=multipart/form-data>
+  <div class="form-group">
+    <label for="inputTitle">Название</label>
+    <input
+      type="text"
+      name="title"
+      value="<%= book.title %>"
+      class="form-control"
+      id="inputTitle"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="inputFile">Файл</label>
+    <input type="file" value="file" name="BookFile" class="form-control" id="inputFile" />
+  </div>
+
+  <div class="form-group">
+    <label for="inputDesc">Описание</label>
+    <textarea
+      rows="3"
+      name="description"
+      value="<%= book.description %>"
+      class="form-control"
+      id="inputDesc"
+    ></textarea>
+  </div>
+
+  <div class="form-group text-right">
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+  </div>
+</form>
+<!-- <% if (book) { %><%= book.title %><% } %> -->

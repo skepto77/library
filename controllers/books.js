@@ -48,7 +48,8 @@ const downloadBook = async (req, res) => {
   const idx = books.findIndex((el) => el.id === id);
 
   if (idx !== -1) {
-    res.download(`uploads/${books[idx].fileBook}`);
+    // res.download(`uploads/${books[idx].fileBook}`);
+    res.download(`${process.cwd()}/uploads/${books[idx].fileBook}`);
   } else {
     res.status(404).json({ message: `Книга не найдена` });
   }

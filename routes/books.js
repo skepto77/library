@@ -14,7 +14,7 @@ router.route('/').get(getBooks);
 router.route('/:id').get(getBookById);
 router.route('/:id/download').get(downloadBook);
 router.route('/').post(uploadFile, addBook);
-router.route('/:id').put(editBook);
+router.route('/:id').put(uploadFile, editBook);
 router.route('/:id').delete(deleteBook);
 
 export default router;
