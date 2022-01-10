@@ -25,6 +25,7 @@ app.use('/api/books', booksRoutes);
 app.use('/api/user', usersRoutes);
 
 app.use((err, req, res, next) => {
+  console.log('Message: ', err.message);
   res.status(404);
   if (err.statusCode === 404) {
     res.render('pages/404', {
