@@ -60,7 +60,11 @@ router
   .get(renderEditBook)
   .post(uploadFile, async (req, res) => {
     try {
-      const result = await axios.put(`${process.env.API_HOST}/books/${req.params.id}`, req.body);
+      const fileBook = req.file ? req.file.filename : null;
+      const result = await axios.put(`${process.env.API_HOST}/books/${req.params.id}`, {
+        ...req.body,
+        fileBook,
+      });
       if (res.statusCode == 200) {
         res.redirect('/');
       }
