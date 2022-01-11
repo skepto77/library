@@ -33,9 +33,10 @@ services:
       - '3000:3000'
     environment:
       - PORT=3000
-      - API_HOST=localhost:3000/api
-      # - API_HOST=https://library1nodejs.herokuapp.com/api
-      - COUNTER_HOST=172.19.0.3:3002
+      # - API_HOST=localhost:3000/api
+      - API_HOST=https://library1nodejs.herokuapp.com:3000/api
+      # - COUNTER_HOST=172.19.0.3:3002
+      - COUNTER_HOST=https://library1nodejs.herokuapp.com:3002/api
     depends_on:
       - counter
     networks:
