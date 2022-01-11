@@ -3,14 +3,14 @@ version: '3.5'
 services:
   storage:
     image: redis
-    # container_name: storage-db
+    container_name: library-storage
     networks:
       - library
     # extra_hosts:
     #   - 'host.docker.internal:127.0.0.1'
   counter:
     build: ./counter
-    container_name: library_counter
+    container_name: library-counter
     command: npm run start
     restart: unless-stopped
     ports:
@@ -26,7 +26,7 @@ services:
     #   - 'host.docker.internal:127.0.0.1'
   api:
     build: ./api
-    container_name: library_api
+    container_name: library-api
     command: npm run start
     restart: unless-stopped
     ports:
@@ -34,15 +34,27 @@ services:
     environment:
       - PORT=3000
       # - API_HOST=localhost:3000/api
-      - API_HOST=https://library1nodejs.herokuapp.com:3000/api
+      - API_HOST=library.okitoki.ru:3000/api
       # - COUNTER_HOST=172.19.0.3:3002
-      - COUNTER_HOST=https://library1nodejs.herokuapp.com:3002/api
+      - COUNTER_HOST=library.okitoki.ru:3002
     depends_on:
       - counter
     networks:
       - library
     # extra_hosts:
     #   - 'host.docker.internal:127.0.0.1'
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: library-nginx
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+      - api
+    networks:
+      - library
 
 networks:
   library:

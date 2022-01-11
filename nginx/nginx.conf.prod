@@ -1,0 +1,14 @@
+server {
+  listen 80;
+
+  server_name library.okitoki.ru;
+
+  location / {
+    proxy_pass http://api:3000;
+  }
+
+  location /counter {
+    proxy_pass http://counter:3002;
+    rewrite ^/api/(.*) /$1 break;
+  }
+}
