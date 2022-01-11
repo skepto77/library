@@ -1,0 +1,48 @@
+version: '3.5'
+
+services:
+  storage:
+    image: redis
+    # container_name: storage-db
+    networks:
+      - library
+    # extra_hosts:
+    #   - 'host.docker.internal:127.0.0.1'
+  counter:
+    build: ./counter
+    container_name: library_counter
+    command: npm run start
+    restart: unless-stopped
+    ports:
+      - '3002:3002'
+    environment:
+      - PORT=3002
+      - REDIS_URL=storage
+    depends_on:
+      - storage
+    networks:
+      - library
+    # extra_hosts:
+    #   - 'host.docker.internal:127.0.0.1'
+  api:
+    build: ./api
+    container_name: library_api
+    command: npm run start
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    environment:
+      - PORT=3000
+      - API_HOST=localhost:3000/api
+      # - API_HOST=https://library1nodejs.herokuapp.com/api
+      - COUNTER_HOST=172.19.0.3:3002
+    depends_on:
+      - counter
+    networks:
+      - library
+    # extra_hosts:
+    #   - 'host.docker.internal:127.0.0.1'
+
+networks:
+  library:
+    driver: bridge

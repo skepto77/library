@@ -8,10 +8,9 @@ import usersRoutes from './routes/users.js';
 import booksRoutes from './routes/books.js';
 
 dotenv.config();
+const app = express();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
-const app = express();
 
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
