@@ -1,0 +1,12 @@
+version: '3.5'
+
+services:
+  api:
+    environment:
+      - API_HOST=http://localhost:3000/api
+      - COUNTER_HOST=172.19.0.3:3002
+    # extra_hosts:
+    #   - 'host.docker.internal:127.0.0.1'
+  nginx:
+    volumes:
+      - ./nginx/nginx.conf.dev:/etc/nginx/conf.d/nginx.conf

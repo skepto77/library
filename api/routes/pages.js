@@ -7,6 +7,8 @@ import uploadFile from '../middleware/uploadFile.js';
 const { books } = store;
 
 const COUNTER_HOST = process.env.COUNTER_HOST || 'localhost';
+const API_HOST = process.env.API_HOST || 'localhost';
+
 console.log(COUNTER_HOST);
 
 const renderIndex = (req, res) => {
@@ -75,8 +77,8 @@ router.route('/:id').get(async (req, res) => {
   let cnt = 0;
 
   try {
-    await axios.post(`http://${COUNTER_HOST}/counter/${id}/incr`);
-    const result = await axios.get(`http://${COUNTER_HOST}/counter/${id}`);
+    await axios.post(`${COUNTER_HOST}/counter/${id}/incr`);
+    const result = await axios.get(`${COUNTER_HOST}/counter/${id}`);
     cnt = result.data.cnt ? result.data.cnt : cnt;
   } catch (err) {
     console.log(err);

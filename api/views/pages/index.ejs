@@ -22,12 +22,7 @@
           <br />
           <br />
           <a href="/books/edit/<%= item.id %>" class="btn btn-primary btn-light">Редактировать</a>
-          <a
-            href="<%= process.env.API_HOST %>/books/<%= item.id %>/download"
-            class="btn btn-primary btn-light"
-          >
-            Скачать
-          </a>
+          <a href="api/books/<%= item.id %>/download" class="btn btn-primary btn-light">Скачать</a>
         </div>
       </div>
       <% }); %> <% }else { %>

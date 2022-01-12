@@ -9,6 +9,5 @@ server {
 
   location /counter {
     proxy_pass http://counter:3002;
-    rewrite ^/api/(.*) /$1 break;
   }
 }
