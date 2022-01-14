@@ -34,6 +34,8 @@ services:
       - COUNTER_HOST=http://library.okitoki.ru
     depends_on:
       - counter
+    volumes:
+      - /home/ilya/projects/library.okitoki.ru/uploads:/app/uploads
     networks:
       - library
 
