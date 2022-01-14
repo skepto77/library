@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import pagesRoutes from './routes/pages.js';
@@ -38,6 +39,22 @@ app.use((err, req, res, next) => {
     });
   }
 });
+
+const connectDB = async () => {
+  try {
+    const con = await mongoose.connect(process.env.MONGO_URL, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+      // useCreateIndex: true,
+    });
+    console.log(`DBconnected: ${con.connection.host}`);
+  } catch (err) {
+    console.log(`Error: ${err.message}`);
+    process.exit(1);
+  }
+};
+
+connectDB();
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, console.log(`Сервер запущен на порту ${PORT}`));

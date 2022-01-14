@@ -1,21 +1,23 @@
 import express from 'express';
 const router = express.Router({ mergeParams: true });
 import axios from 'axios';
-import { store } from '../controllers/books.js';
 import uploadFile from '../middleware/uploadFile.js';
-
-const { books } = store;
 
 const COUNTER_HOST = process.env.COUNTER_HOST || 'localhost';
 const API_HOST = process.env.API_HOST || 'localhost';
 
 console.log(COUNTER_HOST);
 
-const renderIndex = (req, res) => {
-  res.render('pages/index', {
-    title: 'Главная',
-    books,
-  });
+const renderIndex = async (req, res) => {
+  try {
+    const { data } = await axios.get(`${API_HOST}/books/`);
+    res.render('pages/index', {
+      title: 'Главная',
+      books: data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const renderAddBook = (req, res) => {
@@ -24,13 +26,17 @@ const renderAddBook = (req, res) => {
   });
 };
 
-const renderEditBook = (req, res) => {
-  const { id } = req.params;
-  const idx = books.findIndex((el) => el.id === id);
-  res.render('pages/editBook', {
-    title: 'Редактирование книги',
-    book: books[idx],
-  });
+const renderEditBook = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { data } = await axios.get(`${API_HOST}/books/${id}`);
+    res.render('pages/editBook', {
+      title: 'Редактирование книги',
+      book: data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 router
@@ -38,10 +44,11 @@ router
   .get(renderAddBook)
   .post(uploadFile, async (req, res) => {
     try {
-      const fileBook = req.file ? req.file.filename : null;
+      console.log(req.file);
+      const fileName = req.file ? req.file.filename : null;
       const result = await axios.post(`${API_HOST}/books/`, {
         ...req.body,
-        fileBook,
+        fileName,
       });
       if (res.statusCode == 200) {
         res.redirect('/');
@@ -56,10 +63,10 @@ router
   .get(renderEditBook)
   .post(uploadFile, async (req, res) => {
     try {
-      const fileBook = req.file ? req.file.filename : null;
+      const fileName = req.file ? req.file.filename : null;
       const result = await axios.put(`${API_HOST}/books/${req.params.id}`, {
         ...req.body,
-        fileBook,
+        fileName,
       });
       if (res.statusCode == 200) {
         res.redirect('/');
@@ -73,22 +80,31 @@ router.route('/').get(renderIndex);
 
 router.route('/:id').get(async (req, res) => {
   const { id } = req.params;
-  const idx = books.findIndex((el) => el.id === id);
-  let cnt = 0;
-
   try {
+    const { data } = await axios.get(`${API_HOST}/books/${id}`);
     await axios.post(`${COUNTER_HOST}/counter/${id}/incr`);
-    const result = await axios.get(`${COUNTER_HOST}/counter/${id}`);
-    cnt = result.data.cnt ? result.data.cnt : cnt;
+    const {
+      data: { cnt },
+    } = await axios.get(`${COUNTER_HOST}/counter/${id}`);
+    res.render('pages/details', {
+      title: data.title,
+      book: data,
+      count: cnt,
+    });
   } catch (err) {
     console.log(err);
   }
+});
 
-  res.render('pages/details', {
-    title: 'Book',
-    book: {},
-    count: cnt,
-  });
+router.route('/:id/delete').get(async (req, res) => {
+  try {
+    await axios.delete(`${API_HOST}/books/${req.params.id}`);
+    if (res.statusCode == 200) {
+      res.redirect('/');
+    }
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 export default router;
