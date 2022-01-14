@@ -18,11 +18,16 @@
         <div class="card-body">
           <h5 class="card-title"><%= item.title %></h5>
           <p class="card-text"><%= item.description %></p>
-          <a href="/books/<%= item.id %>" class="btn btn-primary">Подробнее</a>
+          <a href="/books/<%= item._id %>" class="btn btn-primary">Подробнее</a>
           <br />
           <br />
-          <a href="/books/edit/<%= item.id %>" class="btn btn-primary btn-light">Редактировать</a>
-          <a href="api/books/<%= item.id %>/download" class="btn btn-primary btn-light">Скачать</a>
+          <a href="/books/edit/<%= item._id %>" class="btn btn-primary btn-light">
+            <i class="bi bi-pencil"></i>
+          </a>
+          <a href="books/<%= item._id %>/delete" class="btn btn-primary btn-light">
+            <i class="bi bi-trash"></i>
+          </a>
+          <a href="api/books/<%= item._id %>/download" class="btn btn-primary btn-light">Скачать</a>
         </div>
       </div>
       <% }); %> <% }else { %>
