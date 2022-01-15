@@ -5,6 +5,8 @@ services:
     environment:
       - API_HOST=http://localhost:3000/api
       - COUNTER_HOST=http://172.19.0.3:3002
+    volumes:
+      - ./api/uploads:/app/uploads
     # extra_hosts:
     #   - 'host.docker.internal:127.0.0.1'
   nginx:
