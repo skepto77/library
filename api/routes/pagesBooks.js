@@ -44,7 +44,7 @@ router
   .get(renderAddBook)
   .post(uploadFile, async (req, res) => {
     try {
-      console.log(req.file);
+      // console.log(req.file);
       const fileName = req.file ? req.file.filename : null;
       const result = await axios.post(`${API_HOST}/books/`, {
         ...req.body,
