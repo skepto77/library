@@ -3,19 +3,16 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import User from '../models/users.js';
 
 passport.serializeUser((user, done) => {
-  console.log('serializeUser');
+  console.log('serializeUser', user.id);
   done(null, user.id);
 });
 
 passport.deserializeUser((_id, done) => {
-  console.log('DeserializeUser called');
   console.log('deserializeUser', _id);
   User.findById(_id, (err, user) => {
     done(err, user);
   });
 });
-
-// TODO: import bcrypt from 'bcryptjs';
 
 passport.use(
   'local',
