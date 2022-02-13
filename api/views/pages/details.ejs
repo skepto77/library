@@ -22,6 +22,68 @@
       </div>
     </div>
   </div>
+  <div class="row d-flex justify-content-center mt-4">
+    <div class="col-4">
+      <div id="list" class="list-group"></div>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center mt-4">
+    <div class="col-4">
+      <div class="form-group mt-2">
+        <label for="username">
+          Имя пользователя: <% if(locals.user) { %> <%= locals.user.username%> <% } else { %>
+          <a href="/user/login">please login</a>
+          <% } %>
+        </label>
+        <input
+          placeholder="username"
+          type="text"
+          id="username"
+          class="form-control"
+          value="<%= locals.user ? locals.user.username : ''  %>"
+        />
+      </div>
+      <div class="form-group mt-2">
+        <label for="text">message</label>
+        <textarea placeholder="message" class="form-control" id="text"></textarea>
+      </div>
+      <button type="submit" id="send-room" class="btn btn-primary mt-2">отправить</button>
+    </div>
+  </div>
 </div>
+
+<script>
+  const roomName = location.pathname.split('/').pop();
+  const socket = io.connect('/', { query: `roomName=${roomName}` });
+  const boxList = document.querySelector('#list');
+  const inputUsername = document.querySelector('#username');
+  const inputText = document.querySelector('#text');
+  const sendRoom = document.querySelector('#send-room');
+
+  const getTmp = (msg) => {
+    return `
+              <div class="list-group-item list-group-item-action">
+                  <div class="d-flex w-100 justify-content-between">
+                      <small>${msg.username}</small>
+                      <small class="text-muted">${msg.type}</small>
+                  </div>
+                  <p class="mb-1">${msg.text}</p>
+              </div>
+      `;
+  };
+
+  socket.on('message-to-room', (msg) => {
+    const div = getTmp(msg);
+    boxList.insertAdjacentHTML('beforeend', div);
+  });
+
+  sendRoom.addEventListener('click', () => {
+    socket.emit('message-to-room', {
+      username: inputUsername.value,
+      text: inputText.value,
+    });
+    console.log(username);
+  });
+</script>
 
 <%- include("../layouts/footer") %>

@@ -4,7 +4,7 @@ services:
   api:
     environment:
       - API_HOST=http://localhost:3000/api
-      - COUNTER_HOST=http://172.19.0.3:3002
+      - COUNTER_HOST=http://172.19.0.3:3003
     volumes:
       - ./api/uploads:/app/uploads
     # extra_hosts:
