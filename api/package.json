@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon dotenv/config index.js dotenv_config_path=.env"
+    "dev": "nodemon dotenv/config index.js dotenv_config_path=.env",
+    "build": "tsc --project ./tsconfig.json --watch"
   },
   "repository": {
     "type": "git",

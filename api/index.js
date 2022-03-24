@@ -45,7 +45,7 @@ app.use(
       mongooseConnection: mongoose.connection,
       ttl: 14 * 24 * 60 * 60,
     }),
-  })
+  }),
 );
 app.use(passport.initialize());
 app.use(passport.session());
